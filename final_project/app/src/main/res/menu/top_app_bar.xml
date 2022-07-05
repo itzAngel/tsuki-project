@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:id="@+id/group1">
+        <item android:id="@+id/home"
+            android:title="Home"
+            android:icon="@drawable/ic_home"/>
+
+        <item android:id="@+id/tortas"
+            android:title="Tortas"
+            android:icon="@drawable/ic_cake"/>
+
+        <item android:id="@+id/tortas_personalizadas"
+            android:title="Tortas Personalizadas"
+            android:icon="@drawable/ic_cake"/>
+
+        <item android:id="@+id/postres"
+            android:title="Postres"
+            android:icon="@drawable/ic_food_bank"/>
+
+        <item android:id="@+id/bebidas"
+            android:title="Bebidas"
+            android:icon="@drawable/ic_breakfast"/>
+
+        <item android:id="@+id/carrito"
+            android:title="Carrito"
+            android:icon="@drawable/ic_shopping_cart"/>
+    </group>
+
+    <group
+        android:id="@+id/group2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/opciones"
+            android:title="Opciones"
+            android:icon="@drawable/ic_settings">
+            <menu>
+                <item
+                    android:id="@+id/mi_cuenta"
+                    android:icon="@drawable/ic_account"
+                    android:title="Mi Cuenta" />
+
+                <item
+                    android:id="@+id/contacto"
+                    android:icon="@drawable/ic_phone"
+                    android:title="Contacto" />
+            </menu>
+        </item>
+    </group>
+</menu>
