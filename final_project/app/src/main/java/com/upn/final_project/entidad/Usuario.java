@@ -12,6 +12,14 @@ public class Usuario {
     public Usuario() {
     }
 
+    public Usuario(String nombre, String apellido, int celular, String direccion, String email) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.celular = celular;
+        this.direccion = direccion;
+        this.email = email;
+    }
+
     public Usuario(int id, String nombre, String apellido, int celular, String direccion, String email) {
         this.id_usuario = id;
         this.nombre = nombre;
@@ -20,6 +28,8 @@ public class Usuario {
         this.direccion = direccion;
         this.email = email;
     }
+
+    public int getId_usuario() { return id_usuario; }
 
     public void setId_usuario(int id_usuario) {
         this.id_usuario = id_usuario;

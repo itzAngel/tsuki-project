@@ -12,6 +12,13 @@ public class Carrito {
         this.id_carrito = id_carrito;
     }
 
+    public Carrito(int id_pedido, int id_producto, int cantidad, double total_carrito) {
+        this.id_pedido = id_pedido;
+        this.id_producto = id_producto;
+        this.cantidad = cantidad;
+        this.total_carrito = total_carrito;
+    }
+
     public Carrito(int id_carrito, int id_pedido, int id_producto, int cantidad, double total_carrito) {
         this.id_carrito = id_carrito;
         this.id_pedido = id_pedido;

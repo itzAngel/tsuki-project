@@ -11,6 +11,13 @@ public class Pedido {
     public Pedido() {
     }
 
+    public Pedido(int id_usuario, double sub_total, double envio, double total) {
+        this.id_usuario = id_usuario;
+        this.sub_total = sub_total;
+        this.envio = envio;
+        this.total = total;
+    }
+
     public Pedido(int id_pedido, int id_usuario, double sub_total, double envio, double total) {
         this.id_pedido = id_pedido;
         this.id_usuario = id_usuario;
