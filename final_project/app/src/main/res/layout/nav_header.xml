@@ -9,19 +9,18 @@
     android:focusable="true"
     android:foreground="?attr/selectableItemBackgroundBorderless"
     android:gravity="bottom"
+    android:backgroundTint="@color/color1"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Navigation Drawer"
+        android:text="Menú"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/color2"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="pregunta 1" />
 
 </LinearLayout>
