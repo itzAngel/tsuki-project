@@ -1,4 +1,4 @@
-package com.upn.final_project.fragmentos;
+package com.upn.final_project;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -14,6 +14,12 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 import com.upn.final_project.R;
+import com.upn.final_project.fragmentos.BebidasFragment;
+import com.upn.final_project.fragmentos.CarritoFragment;
+import com.upn.final_project.fragmentos.HomeFragment;
+import com.upn.final_project.fragmentos.PostresFragment;
+import com.upn.final_project.fragmentos.TortasFragment;
+import com.upn.final_project.fragmentos.TortasPersonalizadasFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
