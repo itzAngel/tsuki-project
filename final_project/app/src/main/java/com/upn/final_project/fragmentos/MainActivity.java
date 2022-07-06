@@ -66,6 +66,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mostrarFragmento(new CarritoFragment());
             item.setChecked(true);
         }
+        if(item.getItemId()==R.id.contacto){
+            mostrarFragmento(new ContactoFragment());
+            item.setChecked(true);
+        }
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
