@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.upn.final_project.entidad.Carrito;
 import com.upn.final_project.entidad.Mascota;
+import com.upn.final_project.entidad.Producto;
 import com.upn.final_project.util.BaseDatos;
 
 import java.util.ArrayList;
@@ -26,16 +28,16 @@ public class DaoProducto {
         database = baseDatos.getWritableDatabase();
     }
 
-    public String registrarMascota(Mascota mascota){
+    public String registrar(Producto producto){
         String respuesta = "";
         try{
             ContentValues values = new ContentValues();
-            values.put("tipo", mascota.getTipo());
-            values.put("nombreMascota", mascota.getNombreMascota());
-            values.put("peso", mascota.getPeso());
-            values.put("edad", mascota.getEdad());
-            values.put("nombreDueno", mascota.getNombreDueno());
-            long resultado = database.insert("mascotas", null, values);
+            values.put("tipo_producto", producto.getTipo_producto());
+            values.put("producto", producto.getProducto());
+            values.put("ruta_imagen", producto.getRuta_imagen());
+            values.put("precio", producto.getPrecio());
+            values.put("comentario", producto.getComentario());
+            long resultado = database.insert("productos", null, values);
             if(resultado ==-1) {
                 respuesta = "Error al insertar";
             }else{
@@ -47,16 +49,16 @@ public class DaoProducto {
         return respuesta;
     }
 
-    public String modificarMascota(Mascota mascota){
+    public String modificar(Producto producto){
         String respuesta = "";
         try{
             ContentValues values = new ContentValues();
-            values.put("tipo", mascota.getTipo());
-            values.put("nombreMascota", mascota.getNombreMascota());
-            values.put("peso", mascota.getPeso());
-            values.put("edad", mascota.getEdad());
-            values.put("nombreDueno", mascota.getNombreDueno());
-            long resultado = database.update("mascotas", values, "id="+mascota.getId(), null);
+            values.put("tipo_producto", producto.getTipo_producto());
+            values.put("producto", producto.getProducto());
+            values.put("ruta_imagen", producto.getRuta_imagen());
+            values.put("precio", producto.getPrecio());
+            values.put("comentario", producto.getComentario());
+            long resultado = database.update("productos", values, "id="+producto.getId_producto(), null);
             if(resultado ==-1) {
                 respuesta = "Error al actualizar";
             }else{
@@ -68,10 +70,10 @@ public class DaoProducto {
         return respuesta;
     }
 
-    public String eliminarMascota(int id){
+    public String eliminar(int id){
         String respuesta = "";
         try {
-            long resultado = database.delete("mascotas", "id="+id,null);
+            long resultado = database.delete("productos", "id="+id,null);
             if(resultado == -1){
                 respuesta = "Error al eliminar";
             }else{
@@ -83,16 +85,16 @@ public class DaoProducto {
         return respuesta;
     }
 
-    public List<Mascota> cargarMascota(){
-        List<Mascota> listaMascotas = new ArrayList<>();
+    public List<Producto> cargar(){
+        List<Producto> lista = new ArrayList<>();
         try{
-            Cursor c = database.rawQuery("SELECT * FROM mascotas",null);
+            Cursor c = database.rawQuery("SELECT * FROM productos",null);
             while (c.moveToNext()){
-                listaMascotas.add(new Mascota(c.getInt(0), c.getString(1), c.getString(2), c.getDouble(3), c.getInt(4), c.getString(5)));
+                lista.add(new Producto(c.getInt(0),c.getString(1), c.getString(2), c.getString(3), c.getDouble(4), c.getString(5)));
             }
         }catch (Exception e){
             Log.d("===>", e.toString());
         }
-        return listaMascotas;
+        return lista;
     }
 }

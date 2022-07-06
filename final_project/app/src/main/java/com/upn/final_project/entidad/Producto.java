@@ -12,6 +12,14 @@ public class Producto {
     public Producto() {
     }
 
+    public Producto(String tipo_producto, String producto, String ruta_imagen, double precio, String comentario) {
+        this.tipo_producto = tipo_producto;
+        this.producto = producto;
+        this.ruta_imagen = ruta_imagen;
+        this.precio = precio;
+        this.comentario = comentario;
+    }
+
     public Producto(int id_producto, String tipo_producto, String producto, String ruta_imagen, double precio, String comentario) {
         this.id_producto = id_producto;
         this.tipo_producto = tipo_producto;

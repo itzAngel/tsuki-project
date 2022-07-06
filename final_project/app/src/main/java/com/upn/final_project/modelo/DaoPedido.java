@@ -6,7 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.upn.final_project.entidad.Carrito;
 import com.upn.final_project.entidad.Mascota;
+import com.upn.final_project.entidad.Pedido;
+import com.upn.final_project.entidad.Usuario;
 import com.upn.final_project.util.BaseDatos;
 
 import java.util.ArrayList;
@@ -26,16 +29,15 @@ public class DaoPedido {
         database = baseDatos.getWritableDatabase();
     }
 
-    public String registrarMascota(Mascota mascota){
+    public String registrar(Pedido pedido){
         String respuesta = "";
         try{
             ContentValues values = new ContentValues();
-            values.put("tipo", mascota.getTipo());
-            values.put("nombreMascota", mascota.getNombreMascota());
-            values.put("peso", mascota.getPeso());
-            values.put("edad", mascota.getEdad());
-            values.put("nombreDueno", mascota.getNombreDueno());
-            long resultado = database.insert("mascotas", null, values);
+            values.put("id_usuario", pedido.getId_usuario());
+            values.put("sub_total", pedido.getSub_total());
+            values.put("envio", pedido.getEnvio());
+            values.put("total", pedido.getTotal());
+            long resultado = database.insert("pedidos", null, values);
             if(resultado ==-1) {
                 respuesta = "Error al insertar";
             }else{
@@ -47,16 +49,15 @@ public class DaoPedido {
         return respuesta;
     }
 
-    public String modificarMascota(Mascota mascota){
+    public String modificar(Pedido pedido){
         String respuesta = "";
         try{
             ContentValues values = new ContentValues();
-            values.put("tipo", mascota.getTipo());
-            values.put("nombreMascota", mascota.getNombreMascota());
-            values.put("peso", mascota.getPeso());
-            values.put("edad", mascota.getEdad());
-            values.put("nombreDueno", mascota.getNombreDueno());
-            long resultado = database.update("mascotas", values, "id="+mascota.getId(), null);
+            values.put("id_usuario", pedido.getId_usuario());
+            values.put("sub_total", pedido.getSub_total());
+            values.put("envio", pedido.getEnvio());
+            values.put("total", pedido.getTotal());
+            long resultado = database.update("pedidos", values, "id="+pedido.getId_pedido(), null);
             if(resultado ==-1) {
                 respuesta = "Error al actualizar";
             }else{
@@ -68,10 +69,10 @@ public class DaoPedido {
         return respuesta;
     }
 
-    public String eliminarMascota(int id){
+    public String eliminar(int id){
         String respuesta = "";
         try {
-            long resultado = database.delete("mascotas", "id="+id,null);
+            long resultado = database.delete("pedidos", "id="+id,null);
             if(resultado == -1){
                 respuesta = "Error al eliminar";
             }else{
@@ -83,16 +84,16 @@ public class DaoPedido {
         return respuesta;
     }
 
-    public List<Mascota> cargarMascota(){
-        List<Mascota> listaMascotas = new ArrayList<>();
+    public List<Pedido> cargar(){
+        List<Pedido> lista = new ArrayList<>();
         try{
-            Cursor c = database.rawQuery("SELECT * FROM mascotas",null);
+            Cursor c = database.rawQuery("SELECT * FROM pedidos",null);
             while (c.moveToNext()){
-                listaMascotas.add(new Mascota(c.getInt(0), c.getString(1), c.getString(2), c.getDouble(3), c.getInt(4), c.getString(5)));
+                lista.add(new Pedido(c.getInt(0),c.getInt(1), c.getInt(2), c.getInt(3), c.getDouble(4)));
             }
         }catch (Exception e){
             Log.d("===>", e.toString());
         }
-        return listaMascotas;
+        return lista;
     }
 }
