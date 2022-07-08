@@ -3,8 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/MyApplication/tsuki-project/final_project/app/src/main/res/drawable/ic_account.xml" value="0.2075" />
         <entry key="..\:/MyApplication/tsuki-project/final_project/app/src/main/res/layout/activity_mapa.xml" value="0.16485507246376813" />
-        <entry key="..\:/MyApplication/tsuki-project/final_project/app/src/main/res/layout/fragment_contacto.xml" value="0.1" />
+        <entry key="..\:/MyApplication/tsuki-project/final_project/app/src/main/res/layout/fragment_bebidas.xml" value="0.1" />
+        <entry key="..\:/MyApplication/tsuki-project/final_project/app/src/main/res/layout/fragment_contacto.xml" value="0.22" />
+        <entry key="..\:/MyApplication/tsuki-project/final_project/app/src/main/res/layout/fragment_home.xml" value="0.1" />
+        <entry key="..\:/MyApplication/tsuki-project/final_project/app/src/main/res/layout/fragment_postres.xml" value="0.1" />
+        <entry key="..\:/MyApplication/tsuki-project/final_project/app/src/main/res/layout/fragment_tortas.xml" value="0.1" />
         <entry key="..\:/MyApplication/tsuki-project/final_project/app/src/main/res/layout/nav_header.xml" value="0.16485507246376813" />
         <entry key="..\:/moviles_upn/final_project/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2265" />
         <entry key="..\:/moviles_upn/final_project/app/src/main/res/drawable/ic_account.xml" value="0.1" />

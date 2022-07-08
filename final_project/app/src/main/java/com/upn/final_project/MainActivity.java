@@ -16,6 +16,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.upn.final_project.R;
 import com.upn.final_project.fragmentos.BebidasFragment;
 import com.upn.final_project.fragmentos.CarritoFragment;
+import com.upn.final_project.fragmentos.ContactoFragment;
 import com.upn.final_project.fragmentos.HomeFragment;
 import com.upn.final_project.fragmentos.PostresFragment;
 import com.upn.final_project.fragmentos.TortasFragment;
