@@ -37,6 +37,7 @@ import com.upn.final_project.fragmentos.HomeFragment;
 import com.upn.final_project.fragmentos.PostresFragment;
 import com.upn.final_project.fragmentos.ProductoFragment;
 import com.upn.final_project.fragmentos.TortasFragment;
+import com.upn.final_project.fragmentos.TortasPersonalizadasFragment;
 import com.upn.final_project.modelo.DaoUsuario;
 
 import java.util.ArrayList;
