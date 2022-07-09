@@ -13,10 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,7 +26,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
-import com.upn.final_project.R;
 import com.upn.final_project.entidad.Producto;
 import com.upn.final_project.entidad.Usuario;
 import com.upn.final_project.fragmentos.BebidasFragment;
@@ -39,7 +36,6 @@ import com.upn.final_project.fragmentos.HomeFragment;
 import com.upn.final_project.fragmentos.PostresFragment;
 import com.upn.final_project.fragmentos.ProductoFragment;
 import com.upn.final_project.fragmentos.TortasFragment;
-import com.upn.final_project.fragmentos.TortasPersonalizadasFragment;
 import com.upn.final_project.modelo.DaoUsuario;
 
 import java.util.ArrayList;
