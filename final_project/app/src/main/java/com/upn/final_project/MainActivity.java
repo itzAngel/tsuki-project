@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         name = findViewById(R.id.name);
         mail = findViewById(R.id.mail);
 
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+      /*  gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
 
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 daoUsuario.registrar(usuario);
             }
         }
-
+*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
