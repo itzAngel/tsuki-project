@@ -4,7 +4,6 @@ public class Usuario {
 
     private int id_usuario;
     private String nombre;
-    private String apellido;
     private int celular;
     private String direccion;
     private String email;
@@ -12,18 +11,16 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String nombre, String apellido, int celular, String direccion, String email) {
+    public Usuario(String nombre, int celular, String direccion, String email) {
         this.nombre = nombre;
-        this.apellido = apellido;
         this.celular = celular;
         this.direccion = direccion;
         this.email = email;
     }
 
-    public Usuario(int id, String nombre, String apellido, int celular, String direccion, String email) {
+    public Usuario(int id, String nombre, int celular, String direccion, String email) {
         this.id_usuario = id;
         this.nombre = nombre;
-        this.apellido = apellido;
         this.celular = celular;
         this.direccion = direccion;
         this.email = email;
@@ -41,14 +38,6 @@ public class Usuario {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
     }
 
     public int getCelular() {

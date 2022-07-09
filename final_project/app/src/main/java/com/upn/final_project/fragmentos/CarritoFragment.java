@@ -2,59 +2,47 @@ package com.upn.final_project.fragmentos;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.upn.final_project.AdaptadorCarroCompras;
+import com.upn.final_project.CarroCompra;
 import com.upn.final_project.R;
+import com.upn.final_project.entidad.Producto;
+import com.upn.final_project.modelo.DaoProducto;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CarritoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 public class CarritoFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    List<Producto> carroCompras;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    AdaptadorCarroCompras adaptador;
+
+    RecyclerView rvListaCarro;
+    TextView tvTotal;
+
+    String aa;
 
     public CarritoFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CarritoFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CarritoFragment newInstance(String param1, String param2) {
-        CarritoFragment fragment = new CarritoFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -62,5 +50,33 @@ public class CarritoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_carrito, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getParentFragmentManager().setFragmentResultListener("key", getViewLifecycleOwner(), new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                String aj = bundle.getString("men");
+                aa = aj;
+                //carroCompras = (List<Producto>) bundle.getSerializable("CarroCompras");
+            }
+        });
+        //para recuperar los datos de otro fragment
+        mostrarCarrito();
+        rvListaCarro = view.findViewById(R.id.rvListaCarro);
+        rvListaCarro.setLayoutManager(new GridLayoutManager(CarritoFragment.this.getContext(), 1));
+        tvTotal = view.findViewById(R.id.tvTotal);
+
+        adaptador = new AdaptadorCarroCompras(CarritoFragment.this.getContext(), carroCompras, tvTotal);
+        rvListaCarro.setAdapter(adaptador);
+
+    }
+
+    private void mostrarCarrito(){
+        DaoProducto daoProducto = new DaoProducto(this.getContext());
+        daoProducto.abrirBaseDatos();
+        carroCompras = daoProducto.cargar();
     }
 }

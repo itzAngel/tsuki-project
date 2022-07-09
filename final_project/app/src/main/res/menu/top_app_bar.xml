@@ -47,6 +47,12 @@
                     android:id="@+id/contacto"
                     android:icon="@drawable/ic_phone"
                     android:title="Contacto" />
+
+                <item
+                    android:id="@+id/signout"
+                    android:icon="@drawable/ic_signout"
+                    android:title="Cerrar Sesion" />
+
             </menu>
         </item>
     </group>

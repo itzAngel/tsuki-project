@@ -94,4 +94,17 @@ public class DaoCarrito {
         }
         return lista;
     }
+
+    public List<Carrito> cargarPorUsuario(int id_usuario){
+        List<Carrito> lista = new ArrayList<>();
+        try{
+            Cursor c = database.rawQuery("SELECT * FROM carritos c inner join pedidos p on c.id_pedido=p.id_pedido where p.id_usuario=" + id_usuario,null);
+            while (c.moveToNext()){
+                lista.add(new Carrito(c.getInt(0),c.getInt(1), c.getInt(2), c.getInt(3), c.getDouble(4)));
+            }
+        }catch (Exception e){
+            Log.d("===>", e.toString());
+        }
+        return lista;
+    }
 }
