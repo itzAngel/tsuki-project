@@ -33,7 +33,6 @@ public class DaoUsuario {
         try{
             ContentValues values = new ContentValues();
             values.put("nombre", usuario.getNombre());
-            values.put("apellido", usuario.getApellido());
             values.put("celular", usuario.getCelular());
             values.put("direccion", usuario.getDireccion());
             values.put("email", usuario.getEmail());
@@ -54,7 +53,6 @@ public class DaoUsuario {
         try{
             ContentValues values = new ContentValues();
             values.put("nombre", usuario.getNombre());
-            values.put("apellido", usuario.getApellido());
             values.put("celular", usuario.getCelular());
             values.put("direccion", usuario.getDireccion());
             values.put("email", usuario.getEmail());
@@ -85,16 +83,30 @@ public class DaoUsuario {
         return respuesta;
     }
 
-    public List<Carrito> cargar(){
-        List<Carrito> lista = new ArrayList<>();
+    public List<Usuario> cargar(){
+        List<Usuario> lista = new ArrayList<>();
         try{
             Cursor c = database.rawQuery("SELECT * FROM usuarios",null);
             while (c.moveToNext()){
-                lista.add(new Carrito(c.getInt(0),c.getInt(1), c.getInt(2), c.getInt(3), c.getDouble(4)));
+                lista.add(new Usuario(c.getInt(0),c.getString(1), c.getInt(2), c.getString(3), c.getString(4)));
             }
         }catch (Exception e){
             Log.d("===>", e.toString());
         }
         return lista;
+    }
+
+    public Usuario cargarporEmail(String email){
+        Usuario user = new Usuario();
+        user.setEmail("fff");
+        try{
+            Cursor c = database.rawQuery("SELECT * FROM usuarios where email like '%" + email +"%'",null);
+            while (c.moveToNext()){
+                user = new Usuario(c.getInt(0),c.getString(1), c.getInt(2), c.getString(3), c.getString(4));
+            }
+        }catch (Exception e){
+            Log.d("===>", e.toString());
+        }
+        return user;
     }
 }

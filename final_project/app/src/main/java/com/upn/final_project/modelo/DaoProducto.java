@@ -97,4 +97,18 @@ public class DaoProducto {
         }
         return lista;
     }
+
+    public Producto cargarPorId(int id_producto){
+        Producto producto = new Producto();
+        try{
+            Cursor c = database.rawQuery("SELECT * FROM productos where id=" + id_producto,null);
+            while (c.moveToNext()){
+                producto = new Producto(c.getInt(0),c.getString(1), c.getString(2), c.getString(3), c.getDouble(4), c.getString(5));
+            }
+        }catch (Exception e){
+            Log.d("===>", e.toString());
+        }
+        return producto;
+    }
+
 }

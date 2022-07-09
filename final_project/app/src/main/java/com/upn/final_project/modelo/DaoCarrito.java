@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.upn.final_project.entidad.Carrito;
 import com.upn.final_project.entidad.Mascota;
+import com.upn.final_project.entidad.Pedido;
+import com.upn.final_project.entidad.Usuario;
 import com.upn.final_project.util.BaseDatos;
 
 import java.util.ArrayList;
@@ -82,6 +84,21 @@ public class DaoCarrito {
         return respuesta;
     }
 
+    public String eliminarPorPedido(int idPedido){
+        String respuesta = "";
+        try {
+            long resultado = database.delete("carritos", "id_pedido="+idPedido,null);
+            if(resultado == -1){
+                respuesta = "Error al eliminar";
+            }else{
+                respuesta = "Se eliminó correctamente";
+            }
+        }catch (Exception e){
+            Log.d("===>",e.toString());
+        }
+        return respuesta;
+    }
+
     public List<Carrito> cargar(){
         List<Carrito> lista = new ArrayList<>();
         try{
@@ -93,5 +110,25 @@ public class DaoCarrito {
             Log.d("===>", e.toString());
         }
         return lista;
+    }
+
+    public List<Carrito> cargarPorUsuario(Usuario usuario){
+        List<Carrito> lista = new ArrayList<>();
+        try{
+            Cursor c = database.rawQuery("SELECT c.* FROM carritos c inner join pedidos p on c.id_pedido=p.id where p.id_usuario=" + usuario.getId_usuario(),null);
+            while (c.moveToNext()){
+                lista.add(new Carrito(c.getInt(0),c.getInt(1), c.getInt(2), c.getInt(3), c.getDouble(4)));
+            }
+        }catch (Exception e){
+            Log.d("===>", e.toString());
+        }
+        return lista;
+    }
+
+    public void registrarListaCarrito(List<Carrito> lista, Pedido pedido){
+        eliminarPorPedido(pedido.getId_pedido());
+        for (Carrito carrito:lista) {
+            registrar(carrito);
+        }
     }
 }

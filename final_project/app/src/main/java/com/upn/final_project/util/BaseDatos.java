@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class BaseDatos extends SQLiteOpenHelper  {
 
     public BaseDatos(Context context) {
-        super(context, "biblioteca.db", null, 1);
+        super(context, "biblioteca2.db", null, 1);
     }
 
     @Override
@@ -16,19 +16,18 @@ public class BaseDatos extends SQLiteOpenHelper  {
                 "CREATE TABLE usuarios " +
                         " (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         " nombre TEXT NOT NULL, " +
-                        " apellido TEXT NOT NULL, " +
-                        " celular TEXT NOT NULL, " +
+                        " celular INTEGER NOT NULL, " +
                         " direccion TEXT NOT NULL, " +
-                        " email TEXT NOT NULL);";
+                        " email TEXT);";
         db.execSQL(query);
         String query2 =
                 "CREATE TABLE productos " +
                         " (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         " tipo_producto TEXT NOT NULL, " +
                         " producto TEXT NOT NULL, " +
-                        " ruta_imagen TEXT NOT NULL, " +
+                        " ruta_imagen TEXT, " +
                         " precio DECIMAL NOT NULL, " +
-                        " comentario TEXT NOT NULL);";
+                        " comentario TEXT);";
         db.execSQL(query2);
         String query3 =
                 "CREATE TABLE carritos " +
@@ -44,7 +43,8 @@ public class BaseDatos extends SQLiteOpenHelper  {
                         " id_usuario TEXT NOT NULL, " +
                         " sub_total DECIMAL NOT NULL, " +
                         " envio DECIMAL NOT NULL, " +
-                        " total DECIMAL NOT NULL);";
+                        " total DECIMAL NOT NULL," +
+                        " estado TEXT NOT NULL);";
         db.execSQL(query4);
     }
 

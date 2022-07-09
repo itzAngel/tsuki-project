@@ -5,11 +5,18 @@ public class Producto {
     private int id_producto;
     private String tipo_producto;
     private String producto;
-    private String ruta_imagen;
+    private String ruta_imagen = "";
     private double precio;
-    private String comentario;
+    private String comentario="";
 
     public Producto() {
+    }
+
+    public Producto(int id_producto, String tipo_producto, String producto, double precio) {
+        this.id_producto = id_producto;
+        this.tipo_producto = tipo_producto;
+        this.producto = producto;
+        this.precio = precio;
     }
 
     public Producto(String tipo_producto, String producto, String ruta_imagen, double precio, String comentario) {

@@ -2,59 +2,73 @@ package com.upn.final_project.fragmentos;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.upn.final_project.AdaptadorCarroCompras;
+import com.upn.final_project.AdaptadorProductos;
+import com.upn.final_project.CarroCompra;
 import com.upn.final_project.R;
+import com.upn.final_project.entidad.Carrito;
+import com.upn.final_project.entidad.Producto;
+import com.upn.final_project.entidad.Usuario;
+import com.upn.final_project.modelo.DaoCarrito;
+import com.upn.final_project.modelo.DaoProducto;
+import com.upn.final_project.modelo.DaoUsuario;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CarritoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 public class CarritoFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    List<Carrito> carroCompras;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    AdaptadorCarroCompras adaptador;
+
+    RecyclerView rvListaCarro;
+    TextView tvTotal;
+
+    //para la sesion del usuario
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
+    String Mail;
+    Usuario usuario = new Usuario();
 
     public CarritoFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CarritoFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CarritoFragment newInstance(String param1, String param2) {
-        CarritoFragment fragment = new CarritoFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        gsc = GoogleSignIn.getClient(this.getContext(),gso);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this.getContext());
+        if(account!=null){
+            Mail = account.getEmail();
         }
+        //cargamos el usuario
+        DaoUsuario daoUsuario = new DaoUsuario(this.getContext());
+        daoUsuario.abrirBaseDatos();
+        usuario = daoUsuario.cargarporEmail(Mail);
     }
 
     @Override
@@ -62,5 +76,25 @@ public class CarritoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_carrito, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //para recuperar los datos de otro fragment
+        mostrarCarrito();
+        rvListaCarro = view.findViewById(R.id.rvListaCarro);
+        rvListaCarro.setLayoutManager(new GridLayoutManager(CarritoFragment.this.getContext(), 1));
+        tvTotal = view.findViewById(R.id.tvTotal);
+
+        adaptador = new AdaptadorCarroCompras(CarritoFragment.this.getContext(), carroCompras, tvTotal);
+        rvListaCarro.setAdapter(adaptador);
+
+    }
+
+    private void mostrarCarrito(){
+        DaoCarrito daoCarrito = new DaoCarrito(CarritoFragment.this.getContext());
+        daoCarrito.abrirBaseDatos();
+        carroCompras = daoCarrito.cargarPorUsuario(usuario);
     }
 }
