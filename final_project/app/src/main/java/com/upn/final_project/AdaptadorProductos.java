@@ -18,11 +18,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.upn.final_project.entidad.Carrito;
+import com.upn.final_project.entidad.Pedido;
 import com.upn.final_project.entidad.Producto;
+import com.upn.final_project.entidad.Usuario;
 import com.upn.final_project.fragmentos.CarritoFragment;
+import com.upn.final_project.modelo.DaoCarrito;
+import com.upn.final_project.modelo.DaoPedido;
 import com.upn.final_project.modelo.DaoProducto;
+import com.upn.final_project.modelo.DaoUsuario;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.ProductosViewHolder> {
@@ -33,7 +44,13 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
     List<Producto> listaProductos;
     List<Producto> carroCompra;
 
-    public AdaptadorProductos(Context context, TextView tvCantProductos, Button btnVerCarro, List<Producto> listaProductos, List<Producto> carroCompra) {
+    //para la sesion del usuario
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
+    String Mail;
+
+    public AdaptadorProductos(Context context, TextView tvCantProductos, Button btnVerCarro,
+                              List<Producto> listaProductos, List<Producto> carroCompra) {
         this.context = context;
         this.tvCantProductos = tvCantProductos;
         this.btnVerCarro = btnVerCarro;
@@ -45,6 +62,15 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
     @Override
     public ProductosViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_rv_productos, null, false);
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        gsc = GoogleSignIn.getClient(this.context,gso);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this.context);
+        if(account!=null){
+            Mail = account.getEmail();
+        }
         return new ProductosViewHolder(v);
     }
 
@@ -71,18 +97,41 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
             @Override
             public void onClick(View v) {
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                //cargamos todos los dao que se usan
+                DaoUsuario daoUsuario = new DaoUsuario(AdaptadorProductos.this.context);
+                daoUsuario.abrirBaseDatos();
                 DaoProducto daoProducto = new DaoProducto(AdaptadorProductos.this.context);
                 daoProducto.abrirBaseDatos();
-                String mensaje = "";
-                for (Producto p: carroCompra) {
-                    daoProducto.registrar(p);
+                DaoPedido daoPedido = new DaoPedido(AdaptadorProductos.this.context);
+                daoPedido.abrirBaseDatos();
+                DaoCarrito daoCarrito = new DaoCarrito(AdaptadorProductos.this.context);
+                daoCarrito.abrirBaseDatos();
+
+                //cargamos el usuario
+                Usuario usuario = daoUsuario.cargarporEmail(Mail);
+                Pedido pedido = new Pedido();
+                List<Carrito> listaCarrito = new ArrayList<>();
+                if(!usuario.getEmail().equals("fff")){//significa que es el usuario activo
+                    pedido = daoPedido.inicializaPedidoDeUsuario(usuario);
+                    //convertimos la lista de productos en lista de carrito
+                    listaCarrito = ponerProductosEnCarrito(carroCompra, pedido);
                 }
+                //eliminamos la lista anterior y ponemos la lista actual
+                daoCarrito.registrarListaCarrito(listaCarrito,pedido);
+
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new CarritoFragment())
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
             }
         });
     }
-
+    public List<Carrito> ponerProductosEnCarrito(List<Producto> listaPro,Pedido pedido){
+        List<Carrito> lista = new ArrayList<>();
+        for (Producto p:listaPro) {
+            Carrito carrito = new Carrito(pedido.getId_pedido(),p.getId_producto(),1,p.getPrecio());
+            lista.add(carrito);
+        }
+        return lista;
+    }
     @Override
     public int getItemCount() {
         return listaProductos.size();
@@ -95,7 +144,6 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
 
         public ProductosViewHolder(@NonNull View itemView) {
             super(itemView);
-
             tvNomProducto = itemView.findViewById(R.id.tvNomProducto);
             tvDescripcion = itemView.findViewById(R.id.tvDescripcion);
             tvPrecio = itemView.findViewById(R.id.tvPrecio);

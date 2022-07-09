@@ -16,11 +16,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.upn.final_project.AdaptadorCarroCompras;
+import com.upn.final_project.AdaptadorProductos;
 import com.upn.final_project.CarroCompra;
 import com.upn.final_project.R;
+import com.upn.final_project.entidad.Carrito;
 import com.upn.final_project.entidad.Producto;
+import com.upn.final_project.entidad.Usuario;
+import com.upn.final_project.modelo.DaoCarrito;
 import com.upn.final_project.modelo.DaoProducto;
+import com.upn.final_project.modelo.DaoUsuario;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,14 +37,18 @@ import java.util.List;
 
 public class CarritoFragment extends Fragment {
 
-    List<Producto> carroCompras;
+    List<Carrito> carroCompras;
 
     AdaptadorCarroCompras adaptador;
 
     RecyclerView rvListaCarro;
     TextView tvTotal;
 
-    String aa;
+    //para la sesion del usuario
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
+    String Mail;
+    Usuario usuario = new Usuario();
 
     public CarritoFragment() {
     }
@@ -43,6 +56,19 @@ public class CarritoFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        gsc = GoogleSignIn.getClient(this.getContext(),gso);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this.getContext());
+        if(account!=null){
+            Mail = account.getEmail();
+        }
+        //cargamos el usuario
+        DaoUsuario daoUsuario = new DaoUsuario(this.getContext());
+        daoUsuario.abrirBaseDatos();
+        usuario = daoUsuario.cargarporEmail(Mail);
     }
 
     @Override
@@ -55,14 +81,6 @@ public class CarritoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getParentFragmentManager().setFragmentResultListener("key", getViewLifecycleOwner(), new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
-                String aj = bundle.getString("men");
-                aa = aj;
-                //carroCompras = (List<Producto>) bundle.getSerializable("CarroCompras");
-            }
-        });
         //para recuperar los datos de otro fragment
         mostrarCarrito();
         rvListaCarro = view.findViewById(R.id.rvListaCarro);
@@ -75,8 +93,8 @@ public class CarritoFragment extends Fragment {
     }
 
     private void mostrarCarrito(){
-        DaoProducto daoProducto = new DaoProducto(this.getContext());
-        daoProducto.abrirBaseDatos();
-        carroCompras = daoProducto.cargar();
+        DaoCarrito daoCarrito = new DaoCarrito(CarritoFragment.this.getContext());
+        daoCarrito.abrirBaseDatos();
+        carroCompras = daoCarrito.cargarPorUsuario(usuario);
     }
 }

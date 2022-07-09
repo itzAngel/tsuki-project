@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -17,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.upn.final_project.AdaptadorCarroCompras;
 import com.upn.final_project.AdaptadorProductos;
 import com.upn.final_project.R;
 import com.upn.final_project.entidad.Producto;
@@ -40,7 +43,7 @@ public class ProductoFragment extends Fragment {
     Producto producto;
     boolean registra = true;
     int id;
-
+    FloatingActionButton btnNuevo;
     TextView tvCantProductos;
     Button btnVerCarro;
     RecyclerView rvListaProductos;
@@ -69,12 +72,18 @@ public class ProductoFragment extends Fragment {
         btnVerCarro = view.findViewById(R.id.btnVerCarro);
         rvListaProductos = view.findViewById(R.id.rvListaProductos);
         rvListaProductos.setLayoutManager(new GridLayoutManager(ProductoFragment.this.getContext(), 1));
-
-        listaProductos.add(new Producto(1, "Producto 1", "Descripcion del Producto 1", 50.0));
-        listaProductos.add(new Producto(2, "Producto 2", "Descripcion del Producto 2", 80.0));
-        listaProductos.add(new Producto(3, "Producto 3", "Descripcion del Producto 3", 40.0));
-        listaProductos.add(new Producto(4, "Producto 4", "Descripcion del Producto 4", 20.0));
-        listaProductos.add(new Producto(5, "Producto 5", "Descripcion del Producto 5", 56.0));
+        btnNuevo = view.findViewById(R.id.btnNuevo);
+        btnNuevo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new AddProductoFragment())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+            }
+        });
+        DaoProducto daoProducto = new DaoProducto(ProductoFragment.this.getContext());
+        daoProducto.abrirBaseDatos();
+        listaProductos = daoProducto.cargar();
 
         adaptador = new AdaptadorProductos(ProductoFragment.this.getContext(), tvCantProductos, btnVerCarro, listaProductos, carroCompras);
         rvListaProductos.setAdapter(adaptador);

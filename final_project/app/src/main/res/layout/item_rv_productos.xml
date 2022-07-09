@@ -33,17 +33,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvNomProducto" />
 
-    <CheckBox
+    <ImageButton
         android:id="@+id/cbCarro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginBottom="8dp"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="@drawable/ic_shopping_cart"
         android:text="Añadir al carro de compras"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDescripcion" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDescripcion"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/tvPrecio"

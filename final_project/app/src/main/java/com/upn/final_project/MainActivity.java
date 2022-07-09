@@ -84,8 +84,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             String Mail = account.getEmail();
             DaoUsuario daoUsuario = new DaoUsuario(MainActivity.this);
             daoUsuario.abrirBaseDatos();
-            if(!daoUsuario.cargarporEmail(Mail).getEmail().equals("fff")){
-                Usuario usuario = new Usuario(Name,999999999,"",Mail);
+            //si es la primera vez que inicia sesion lo agrega a la base de datos
+            if(daoUsuario.cargarporEmail(Mail).getEmail().equals("fff")){
+                Usuario usuario = new Usuario(Name,999999999,"a",Mail);
                 daoUsuario.registrar(usuario);
             }
         }

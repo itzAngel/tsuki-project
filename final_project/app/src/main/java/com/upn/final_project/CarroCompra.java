@@ -7,13 +7,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.upn.final_project.entidad.Carrito;
 import com.upn.final_project.entidad.Producto;
 
 import java.util.List;
 
 public class CarroCompra extends AppCompatActivity {
 
-    List<Producto> carroCompras;
+    List<Carrito> carroCompras;
 
     AdaptadorCarroCompras adaptador;
 
@@ -26,7 +27,7 @@ public class CarroCompra extends AppCompatActivity {
         setContentView(R.layout.fragment_carrito);
         getSupportActionBar().hide();
 
-        carroCompras = (List<Producto>) getIntent().getSerializableExtra("CarroCompras");
+        carroCompras = (List<Carrito>) getIntent().getSerializableExtra("CarroCompras");
 
         rvListaCarro = findViewById(R.id.rvListaCarro);
         rvListaCarro.setLayoutManager(new GridLayoutManager(CarroCompra.this, 1));

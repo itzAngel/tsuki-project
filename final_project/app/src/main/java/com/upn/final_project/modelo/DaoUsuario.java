@@ -100,7 +100,7 @@ public class DaoUsuario {
         Usuario user = new Usuario();
         user.setEmail("fff");
         try{
-            Cursor c = database.rawQuery("SELECT * FROM usuarios where email = '" + email +"'",null);
+            Cursor c = database.rawQuery("SELECT * FROM usuarios where email like '%" + email +"%'",null);
             while (c.moveToNext()){
                 user = new Usuario(c.getInt(0),c.getString(1), c.getInt(2), c.getString(3), c.getString(4));
             }

@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class BaseDatos extends SQLiteOpenHelper  {
 
     public BaseDatos(Context context) {
-        super(context, "biblioteca.db", null, 1);
+        super(context, "biblioteca2.db", null, 1);
     }
 
     @Override
@@ -43,7 +43,8 @@ public class BaseDatos extends SQLiteOpenHelper  {
                         " id_usuario TEXT NOT NULL, " +
                         " sub_total DECIMAL NOT NULL, " +
                         " envio DECIMAL NOT NULL, " +
-                        " total DECIMAL NOT NULL);";
+                        " total DECIMAL NOT NULL," +
+                        " estado TEXT NOT NULL);";
         db.execSQL(query4);
     }
 

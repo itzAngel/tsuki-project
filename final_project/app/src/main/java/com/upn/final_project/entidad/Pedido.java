@@ -7,23 +7,34 @@ public class Pedido {
     private double sub_total;
     private double envio;
     private double total;
+    private String estado;
 
     public Pedido() {
     }
 
-    public Pedido(int id_usuario, double sub_total, double envio, double total) {
+    public Pedido(int id_usuario, double sub_total, double envio, double total, String estado) {
         this.id_usuario = id_usuario;
         this.sub_total = sub_total;
         this.envio = envio;
         this.total = total;
+        this.estado = estado;
     }
 
-    public Pedido(int id_pedido, int id_usuario, double sub_total, double envio, double total) {
+    public Pedido(int id_pedido, int id_usuario, double sub_total, double envio, double total, String estado) {
         this.id_pedido = id_pedido;
         this.id_usuario = id_usuario;
         this.sub_total = sub_total;
         this.envio = envio;
         this.total = total;
+        this.estado = estado;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public int getId_pedido() {

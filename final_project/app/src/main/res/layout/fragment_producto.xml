@@ -11,6 +11,19 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnNuevo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:backgroundTint="@color/color1"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@android:drawable/ic_input_add"
+            tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
+
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
@@ -52,7 +65,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="#4CAF50"
-                    android:text="VER CARRO DE COMPRAS"
+                    android:text="CARGAR CARRO DE COMPRAS"
                     android:textColor="#263238"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

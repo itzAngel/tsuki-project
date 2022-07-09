@@ -37,6 +37,7 @@ public class DaoPedido {
             values.put("sub_total", pedido.getSub_total());
             values.put("envio", pedido.getEnvio());
             values.put("total", pedido.getTotal());
+            values.put("estado", pedido.getEstado());
             long resultado = database.insert("pedidos", null, values);
             if(resultado ==-1) {
                 respuesta = "Error al insertar";
@@ -57,6 +58,7 @@ public class DaoPedido {
             values.put("sub_total", pedido.getSub_total());
             values.put("envio", pedido.getEnvio());
             values.put("total", pedido.getTotal());
+            values.put("estado", pedido.getEstado());
             long resultado = database.update("pedidos", values, "id="+pedido.getId_pedido(), null);
             if(resultado ==-1) {
                 respuesta = "Error al actualizar";
@@ -89,11 +91,29 @@ public class DaoPedido {
         try{
             Cursor c = database.rawQuery("SELECT * FROM pedidos",null);
             while (c.moveToNext()){
-                lista.add(new Pedido(c.getInt(0),c.getInt(1), c.getInt(2), c.getInt(3), c.getDouble(4)));
+                lista.add(new Pedido(c.getInt(0),c.getInt(1), c.getInt(2), c.getInt(3), c.getDouble(4), c.getString(5)));
             }
         }catch (Exception e){
             Log.d("===>", e.toString());
         }
         return lista;
+    }
+
+    public Pedido inicializaPedidoDeUsuario(Usuario usuario){
+        Pedido pedido = new Pedido();
+        try{
+            Cursor c = database.rawQuery("SELECT * FROM pedidos where id_usuario =" + usuario.getId_usuario() +" and estado='activo'" ,null);
+            if(c.getCount()==0){
+                pedido = new Pedido(usuario.getId_usuario(),0,0,0,"activo");
+                registrar(pedido);
+            }else{
+                while (c.moveToNext()){
+                    pedido = new Pedido(c.getInt(0),c.getInt(1), c.getInt(2), c.getInt(3), c.getDouble(4), c.getString(5));
+                }
+            }
+        }catch (Exception e){
+            Log.d("===>", e.toString());
+        }
+        return pedido;
     }
 }
