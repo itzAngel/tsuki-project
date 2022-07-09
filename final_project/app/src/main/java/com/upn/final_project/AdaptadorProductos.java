@@ -133,6 +133,7 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
                 AddProductoFragment add = new AddProductoFragment();
                 Context myContext = v.getContext();
                 SharedPreferences.Editor editor = activity.getSharedPreferences("DeviceToken", MODE_PRIVATE).edit();
+                editor.clear();
                 editor.putString("pid",listaProductos.get(i).getId_producto()+"");
                 editor.putString("ptipo",listaProductos.get(i).getTipo_producto()+"");
                 editor.putString("pproducto",listaProductos.get(i).getProducto()+"");

@@ -60,7 +60,7 @@ public class AddProductoFragment extends Fragment {
         AppCompatActivity activity = (AppCompatActivity) view.getContext();
         SharedPreferences prefs = activity.getSharedPreferences("DeviceToken", MODE_PRIVATE);
         String pid = prefs.getString("pid", null);
-        if(pid!=null){
+        if(pid!=null&&pid!="agrega"){
             registra = false;
             lblTitulo.setText("Modificar Producto");
             btnRegistrar.setText("Modificar Producto");

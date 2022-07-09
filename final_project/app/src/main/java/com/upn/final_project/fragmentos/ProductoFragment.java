@@ -1,7 +1,11 @@
 package com.upn.final_project.fragmentos;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -77,6 +81,11 @@ public class ProductoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                Context myContext = v.getContext();
+                SharedPreferences.Editor editor = activity.getSharedPreferences("DeviceToken", MODE_PRIVATE).edit();
+                editor.clear();
+                editor.putString("pid","agrega");
+                editor.apply();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new AddProductoFragment())
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
             }
