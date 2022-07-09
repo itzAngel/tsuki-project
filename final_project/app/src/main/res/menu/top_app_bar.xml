@@ -34,6 +34,23 @@
         android:id="@+id/group2"
         android:checkableBehavior="single">
         <item
+            android:id="@+id/gestion"
+            android:title="Gestion"
+            android:icon="@drawable/ic_settings">
+            <menu>
+                <item
+                    android:id="@+id/productos"
+                    android:icon="@drawable/ic_account"
+                    android:title="Productos" />
+
+            </menu>
+        </item>
+    </group>
+
+    <group
+        android:id="@+id/group3"
+        android:checkableBehavior="single">
+        <item
             android:id="@+id/opciones"
             android:title="Opciones"
             android:icon="@drawable/ic_settings">

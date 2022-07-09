@@ -1,5 +1,6 @@
 package com.upn.final_project;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,7 +28,9 @@ import com.upn.final_project.entidad.Carrito;
 import com.upn.final_project.entidad.Pedido;
 import com.upn.final_project.entidad.Producto;
 import com.upn.final_project.entidad.Usuario;
+import com.upn.final_project.fragmentos.AddProductoFragment;
 import com.upn.final_project.fragmentos.CarritoFragment;
+import com.upn.final_project.fragmentos.ProductoFragment;
 import com.upn.final_project.modelo.DaoCarrito;
 import com.upn.final_project.modelo.DaoPedido;
 import com.upn.final_project.modelo.DaoProducto;
@@ -75,24 +79,17 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductosViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProductosViewHolder holder,final int i) {
         holder.tvNomProducto.setText(listaProductos.get(holder.getAdapterPosition()).getTipo_producto());
         holder.tvDescripcion.setText(listaProductos.get(holder.getAdapterPosition()).getProducto());
         holder.tvPrecio.setText(""+listaProductos.get(holder.getAdapterPosition()).getPrecio());
-
-        holder.cbCarro.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.cbCarro.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(holder.cbCarro.isChecked() == true) {
-                    tvCantProductos.setText(""+(Integer.parseInt(tvCantProductos.getText().toString().trim()) + 1));
-                    carroCompra.add(listaProductos.get(holder.getAdapterPosition()));
-                } else if(holder.cbCarro.isChecked() == false) {
-                    tvCantProductos.setText(""+(Integer.parseInt(tvCantProductos.getText().toString().trim()) - 1));
-                    carroCompra.remove(listaProductos.get(holder.getAdapterPosition()));
-                }
+            public void onClick(View v) {
+                tvCantProductos.setText(""+(Integer.parseInt(tvCantProductos.getText().toString().trim()) + 1));
+                carroCompra.add(listaProductos.get(holder.getAdapterPosition()));
             }
         });
-
         btnVerCarro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,6 +120,52 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
             }
         });
+        holder.filaEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new AddProductoFragment())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+                /*
+                intent.putExtra("pid",listaMascotas.get(position).getId()+"");
+                intent.putExtra("ptipo",listaMascotas.get(position).getTipo()+"");
+                intent.putExtra("pmascota",listaMascotas.get(position).getNombreMascota()+"");
+                intent.putExtra("ppeso",listaMascotas.get(position).getPeso()+"");
+                intent.putExtra("pedad",listaMascotas.get(position).getEdad()+"");
+                intent.putExtra("pdueno",listaMascotas.get(position).getNombreDueno()+"");
+                 */
+            }
+        });
+        holder.filaEliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder ventana = new AlertDialog.Builder(context);
+                ventana.setTitle("Confimacion de eliminar");
+                ventana.setMessage("¿Desea eliminar la mascota: " + listaProductos.get(i).getProducto() + "?");
+                ventana.setNegativeButton("NO", null);
+                ventana.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DaoProducto daoProducto = new DaoProducto(context);
+                        daoProducto.abrirBaseDatos();
+                        String mensaje = daoProducto.eliminar(listaProductos.get(i).getId_producto());
+                        AlertDialog.Builder v2 = new AlertDialog.Builder(context);
+                        v2.setTitle("Mensaje Informativo");
+                        v2.setMessage(mensaje);
+                        v2.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                                activity.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new ProductoFragment())
+                                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+                            }
+                        });
+                        v2.create().show();
+                    }
+                });
+                ventana.create().show();
+            }
+        });
     }
     public List<Carrito> ponerProductosEnCarrito(List<Producto> listaPro,Pedido pedido){
         List<Carrito> lista = new ArrayList<>();
@@ -140,7 +183,8 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
     public class ProductosViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvNomProducto, tvDescripcion, tvPrecio;
-        CheckBox cbCarro;
+        ImageButton cbCarro;
+        ImageButton filaEditar,filaEliminar;
 
         public ProductosViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -148,6 +192,8 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
             tvDescripcion = itemView.findViewById(R.id.tvDescripcion);
             tvPrecio = itemView.findViewById(R.id.tvPrecio);
             cbCarro = itemView.findViewById(R.id.cbCarro);
+            filaEditar = itemView.findViewById(R.id.filaEditar);
+            filaEliminar = itemView.findViewById(R.id.filaEliminar);
         }
     }
 }
