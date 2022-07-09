@@ -84,6 +84,43 @@
                     android:paddingHorizontal="10dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvsabor" />
+
+                <TextView
+                    android:id="@+id/tvadic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="Comentario"
+                    android:textColor="@color/color2"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtSabor" />
+
+                <EditText
+                    android:id="@+id/txtAdicional"
+                    android:layout_width="379dp"
+                    android:layout_height="49dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/white"
+                    android:ems="10"
+                    android:hint="Ingresa comentarios adicionales"
+                    android:inputType="textPersonName"
+                    android:paddingHorizontal="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvadic" />
+
+                <Button
+                    android:id="@+id/btnEnviarPersonalizado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="160dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Enviar"
+                    android:textColor="@color/color2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtAdicional" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>

@@ -40,7 +40,7 @@
             <menu>
                 <item
                     android:id="@+id/productos"
-                    android:icon="@drawable/ic_account"
+                    android:icon="@drawable/ic_producto"
                     android:title="Productos" />
 
             </menu>

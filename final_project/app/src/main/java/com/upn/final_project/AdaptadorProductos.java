@@ -1,9 +1,12 @@
 package com.upn.final_project;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -127,19 +130,18 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
             @Override
             public void onClick(View v) {
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new AddProductoFragment())
+                AddProductoFragment add = new AddProductoFragment();
+                Context myContext = v.getContext();
+                SharedPreferences.Editor editor = activity.getSharedPreferences("DeviceToken", MODE_PRIVATE).edit();
+                editor.putString("pid",listaProductos.get(i).getId_producto()+"");
+                editor.putString("ptipo",listaProductos.get(i).getTipo_producto()+"");
+                editor.putString("pproducto",listaProductos.get(i).getProducto()+"");
+                editor.putString("pruta",listaProductos.get(i).getRuta_imagen()+"");
+                editor.putString("pprecio",listaProductos.get(i).getPrecio()+"");
+                editor.putString("pcomentario",listaProductos.get(i).getComentario()+"");
+                editor.apply();
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, add)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
-                Bundle bundle = new Bundle();
-                bundle.putString("pid","1");
-                new AddProductoFragment().setArguments(bundle);
-                /*
-                intent.putExtra("pid",listaMascotas.get(position).getId()+"");
-                intent.putExtra("ptipo",listaMascotas.get(position).getTipo()+"");
-                intent.putExtra("pmascota",listaMascotas.get(position).getNombreMascota()+"");
-                intent.putExtra("ppeso",listaMascotas.get(position).getPeso()+"");
-                intent.putExtra("pedad",listaMascotas.get(position).getEdad()+"");
-                intent.putExtra("pdueno",listaMascotas.get(position).getNombreDueno()+"");
-                 */
             }
         });
         holder.filaEliminar.setOnClickListener(new View.OnClickListener() {

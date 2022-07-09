@@ -9,6 +9,7 @@ import android.util.Log;
 import com.upn.final_project.entidad.Carrito;
 import com.upn.final_project.entidad.Mascota;
 import com.upn.final_project.entidad.Pedido;
+import com.upn.final_project.entidad.Producto;
 import com.upn.final_project.entidad.Usuario;
 import com.upn.final_project.util.BaseDatos;
 
@@ -112,10 +113,54 @@ public class DaoCarrito {
         return lista;
     }
 
+    public Carrito agregarCarrito(Carrito car,Producto pro){
+        Carrito carrito = new Carrito();
+        carrito.setTotal_carrito(8);
+        try{
+            Cursor c = database.rawQuery("SELECT * FROM carritos where id_pedido="+car.getId_pedido()+ " and id_producto= "+car.getId_producto(),null);
+            while (c.moveToNext()){
+                carrito = new Carrito(c.getInt(0),c.getInt(1), c.getInt(2), c.getInt(3), c.getDouble(4));
+            }
+            if(carrito.getTotal_carrito()==8){
+                registrar(carrito);
+            }else{
+                carrito.setCantidad(carrito.getCantidad()+1);
+                carrito.setTotal_carrito(carrito.getCantidad()*pro.getPrecio());
+                modificar(carrito);
+            }
+        }catch (Exception e){
+            Log.d("===>", e.toString());
+        }
+        return carrito;
+    }
+
+    public Carrito quitarCarrito(Carrito car,Producto pro){
+        Carrito carrito = new Carrito();
+        carrito.setTotal_carrito(8);
+        try{
+            Cursor c = database.rawQuery("SELECT * FROM carritos where id_pedido="+car.getId_pedido()+ " and id_producto= "+car.getId_producto(),null);
+            while (c.moveToNext()){
+                carrito = new Carrito(c.getInt(0),c.getInt(1), c.getInt(2), c.getInt(3), c.getDouble(4));
+            }
+            if(carrito.getTotal_carrito()!=8){
+                if(carrito.getCantidad()>1){
+                    carrito.setCantidad(carrito.getCantidad()-1);
+                    carrito.setTotal_carrito(carrito.getCantidad()*pro.getPrecio());
+                    modificar(carrito);
+                }else{
+                    eliminar(carrito.getId_carrito());
+                }
+            }
+        }catch (Exception e){
+            Log.d("===>", e.toString());
+        }
+        return carrito;
+    }
+
     public List<Carrito> cargarPorUsuario(Usuario usuario){
         List<Carrito> lista = new ArrayList<>();
         try{
-            Cursor c = database.rawQuery("SELECT c.* FROM carritos c inner join pedidos p on c.id_pedido=p.id where p.id_usuario=" + usuario.getId_usuario(),null);
+            Cursor c = database.rawQuery("SELECT c.* FROM carritos c inner join pedidos p on c.id_pedido=p.id where p.id_usuario=" + usuario.getId_usuario() + " and p.estado='activo' ",null);
             while (c.moveToNext()){
                 lista.add(new Carrito(c.getInt(0),c.getInt(1), c.getInt(2), c.getInt(3), c.getDouble(4)));
             }
@@ -128,7 +173,23 @@ public class DaoCarrito {
     public void registrarListaCarrito(List<Carrito> lista, Pedido pedido){
         eliminarPorPedido(pedido.getId_pedido());
         for (Carrito carrito:lista) {
+            carrito.setCantidad(1);
             registrar(carrito);
         }
+    }
+
+    public String deleteAll(){
+        String respuesta = "";
+        try {
+            long resultado = database.delete("carritos", "id=id",null);
+            if(resultado == -1){
+                respuesta = "Error al eliminar";
+            }else{
+                respuesta = "Se eliminó correctamente";
+            }
+        }catch (Exception e){
+            Log.d("===>",e.toString());
+        }
+        return respuesta;
     }
 }

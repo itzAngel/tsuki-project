@@ -116,4 +116,11 @@ public class DaoPedido {
         }
         return pedido;
     }
+
+    public Pedido registrarPedidoActivo(Usuario usuario){
+        Pedido pedido = inicializaPedidoDeUsuario(usuario);
+        pedido.setEstado("en proceso");
+        modificar(pedido);
+        return inicializaPedidoDeUsuario(usuario);
+    }
 }

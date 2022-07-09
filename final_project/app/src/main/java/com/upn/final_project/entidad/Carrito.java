@@ -8,6 +8,9 @@ public class Carrito {
     private int cantidad;
     private double total_carrito;
 
+    public Carrito() {
+    }
+
     public Carrito(int id_carrito) {
         this.id_carrito = id_carrito;
     }

@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -38,6 +39,8 @@ import com.upn.final_project.fragmentos.PostresFragment;
 import com.upn.final_project.fragmentos.ProductoFragment;
 import com.upn.final_project.fragmentos.TortasFragment;
 import com.upn.final_project.fragmentos.TortasPersonalizadasFragment;
+import com.upn.final_project.modelo.DaoCarrito;
+import com.upn.final_project.modelo.DaoPedido;
 import com.upn.final_project.modelo.DaoUsuario;
 
 import java.util.ArrayList;
@@ -69,11 +72,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        DaoCarrito daoCarrito = new DaoCarrito(MainActivity.this);
+        daoCarrito.abrirBaseDatos();
         name = findViewById(R.id.name);
         mail = findViewById(R.id.mail);
 
-      /*  gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
 
@@ -90,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 daoUsuario.registrar(usuario);
             }
         }
-*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -103,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
     }
 
     private boolean SignOut() {
@@ -144,8 +146,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             item.setChecked(true);
         }
         if(item.getItemId()==R.id.productos){
-            mostrarFragmento(new ProductoFragment());
-            item.setChecked(true);
+            if(account!=null && account.getEmail().equals("itzangelbc@gmail.com")){
+                mostrarFragmento(new ProductoFragment());
+                item.setChecked(true);
+            }else{
+                Toast.makeText(this, "No puede ingresar a esta opcion", Toast.LENGTH_SHORT).show();
+            }
+            
         }
         if(item.getItemId()==R.id.mi_cuenta){
             mostrarFragmento(new CuentaFragment());

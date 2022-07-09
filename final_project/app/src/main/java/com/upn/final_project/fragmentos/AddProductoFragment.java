@@ -1,10 +1,15 @@
 package com.upn.final_project.fragmentos;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,8 +38,6 @@ public class AddProductoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String pid = (String) this.getArguments().get("pid");
-        txtTipo_producto.setText(pid);
     }
 
     @Override
@@ -42,6 +45,40 @@ public class AddProductoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_producto, container, false);
+        asignarReferencias(view);
+        recibirParametros(view);
+        return view;
+    }
+
+    private void popThisFragment(View v){
+        AppCompatActivity activity = (AppCompatActivity) v.getContext();
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new ProductoFragment())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+    }
+
+    public void recibirParametros(View view){
+        AppCompatActivity activity = (AppCompatActivity) view.getContext();
+        SharedPreferences prefs = activity.getSharedPreferences("DeviceToken", MODE_PRIVATE);
+        String pid = prefs.getString("pid", null);
+        if(pid!=null){
+            registra = false;
+            lblTitulo.setText("Modificar Producto");
+            btnRegistrar.setText("Modificar Producto");
+            String ptipo = prefs.getString("ptipo", null);
+            String pproducto = prefs.getString("pproducto", null);
+            String pruta = prefs.getString("pruta", null);
+            String pprecio = prefs.getString("pprecio", null);
+            String pcomentario = prefs.getString("pcomentario", null);
+            id=Integer.parseInt(pid);
+            txtTipo_producto.setText(ptipo);
+            txtProducto.setText(pproducto);
+            txtRuta_imagen.setText(pruta);
+            txtPrecio.setText(pprecio);
+            txtComentario.setText(pcomentario);
+        }
+    }
+
+    public void asignarReferencias(View view){
         lblTitulo = view.findViewById(R.id.lblTitulo);
         txtTipo_producto = view.findViewById(R.id.txtTipo);
         txtProducto = view.findViewById(R.id.txtNombreproducto);
@@ -67,20 +104,14 @@ public class AddProductoFragment extends Fragment {
                     ventana.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            popThisFragment();
+                            popThisFragment(v);
                         }
                     });
                     ventana.create().show();
                 }
             }
         });
-        return view;
     }
-
-    private void popThisFragment(){
-        getActivity().getSupportFragmentManager().popBackStack();
-    }
-
     private boolean capturarDatos(){
         String tipo_producto = txtTipo_producto.getText().toString();
         String nomproducto = txtProducto.getText().toString();
