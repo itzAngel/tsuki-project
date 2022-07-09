@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public TextView name, mail;
     ImageView logout;
 
+    GoogleSignInAccount account;
+
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
 
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .build();
 
         gsc = GoogleSignIn.getClient(this,gso);
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        account = GoogleSignIn.getLastSignedInAccount(this);
         if(account!=null){
             String Name = account.getDisplayName();
             String Mail = account.getEmail();
@@ -124,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             item.setChecked(true);
         }
         if(item.getItemId()==R.id.tortas_personalizadas){
-            mostrarFragmento(new ProductoFragment());
+            mostrarFragmento(new TortasPersonalizadasFragment());
             item.setChecked(true);
         }
         if(item.getItemId()==R.id.postres){
@@ -137,6 +140,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         if(item.getItemId()==R.id.carrito){
             mostrarFragmento(new CarritoFragment());
+            item.setChecked(true);
+        }
+        if(item.getItemId()==R.id.productos){
+            mostrarFragmento(new ProductoFragment());
             item.setChecked(true);
         }
         if(item.getItemId()==R.id.mi_cuenta){
