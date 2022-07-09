@@ -3,6 +3,7 @@ package com.upn.final_project.fragmentos;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -15,11 +16,6 @@ import android.widget.ImageButton;
 
 import com.upn.final_project.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class HomeFragment extends Fragment {
     ImageButton btnTortas,btnTortasP, btnPostres, btnBebidas;
 
@@ -32,8 +28,37 @@ public class HomeFragment extends Fragment {
         btnTortasP=(ImageButton) view.findViewById(R.id.btnTortasP);
         btnPostres=(ImageButton) view.findViewById(R.id.btnPostres);
         btnBebidas=(ImageButton) view.findViewById(R.id.btnBebidas);
-
+        btnTortas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarFragmento(new TortasFragment(),v);
+            }
+        });
+        btnTortasP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarFragmento(new TortasPersonalizadasFragment(),v);
+            }
+        });
+        btnPostres.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarFragmento(new PostresFragment(),v);
+            }
+        });
+        btnBebidas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarFragmento(new BebidasFragment(),v);
+            }
+        });
 
         return view;
+    }
+
+    public void mostrarFragmento(Fragment fragment, View v){
+        AppCompatActivity activity = (AppCompatActivity) v.getContext();
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, fragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
     }
 }

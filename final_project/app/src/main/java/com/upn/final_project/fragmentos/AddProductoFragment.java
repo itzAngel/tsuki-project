@@ -33,6 +33,8 @@ public class AddProductoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String pid = (String) this.getArguments().get("pid");
+        txtTipo_producto.setText(pid);
     }
 
     @Override

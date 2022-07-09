@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.squareup.picasso.Picasso;
 import com.upn.final_project.entidad.Carrito;
 import com.upn.final_project.entidad.Pedido;
 import com.upn.final_project.entidad.Producto;
@@ -83,6 +85,7 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
         holder.tvNomProducto.setText(listaProductos.get(holder.getAdapterPosition()).getTipo_producto());
         holder.tvDescripcion.setText(listaProductos.get(holder.getAdapterPosition()).getProducto());
         holder.tvPrecio.setText(""+listaProductos.get(holder.getAdapterPosition()).getPrecio());
+        Picasso.get().load(listaProductos.get(holder.getAdapterPosition()).getRuta_imagen()).into(holder.imageProducto);
         holder.cbCarro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +129,9 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new AddProductoFragment())
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+                Bundle bundle = new Bundle();
+                bundle.putString("pid","1");
+                new AddProductoFragment().setArguments(bundle);
                 /*
                 intent.putExtra("pid",listaMascotas.get(position).getId()+"");
                 intent.putExtra("ptipo",listaMascotas.get(position).getTipo()+"");
@@ -141,7 +147,7 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
             public void onClick(View v) {
                 AlertDialog.Builder ventana = new AlertDialog.Builder(context);
                 ventana.setTitle("Confimacion de eliminar");
-                ventana.setMessage("¿Desea eliminar la mascota: " + listaProductos.get(i).getProducto() + "?");
+                ventana.setMessage("¿Desea eliminar el producto: " + listaProductos.get(i).getProducto() + "?");
                 ventana.setNegativeButton("NO", null);
                 ventana.setPositiveButton("SI", new DialogInterface.OnClickListener() {
                     @Override
@@ -184,10 +190,12 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
 
         TextView tvNomProducto, tvDescripcion, tvPrecio;
         ImageButton cbCarro;
+        ImageView imageProducto;
         ImageButton filaEditar,filaEliminar;
 
         public ProductosViewHolder(@NonNull View itemView) {
             super(itemView);
+            imageProducto = itemView.findViewById((R.id.tvImgProducto));
             tvNomProducto = itemView.findViewById(R.id.tvNomProducto);
             tvDescripcion = itemView.findViewById(R.id.tvDescripcion);
             tvPrecio = itemView.findViewById(R.id.tvPrecio);
